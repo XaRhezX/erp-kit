@@ -7,10 +7,14 @@ use App\Models\LocationCity;
 use Illuminate\Http\Request;
 use App\Http\Requests\Location\City\StoreRequest;
 use App\Http\Requests\Location\City\UpdateRequest;
+use App\Actions\Location\City\Store;
+use App\Actions\Location\City\Update;
+use App\Actions\Location\City\Delete;
+
 
 class CityController extends Controller
 {
-    protected $is_public = false;
+    protected $is_public = true;
     protected $need_permission = true;
 
 
@@ -34,8 +38,8 @@ class CityController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $created = LocationCity::create($request->validated());
-        return $this->success($created);
+        $store = Store::run($request->validated());
+        return $this->success($store);
     }
 
     /**
@@ -59,8 +63,8 @@ class CityController extends Controller
      */
     public function update(UpdateRequest $request, LocationCity $locationCity)
     {
-        $locationCity->update($request->validated());
-        return $this->success($locationCity);
+        $update = Update::run($locationCity,$request->validated());
+        return $this->success($update);
     }
 
     /**
@@ -71,7 +75,7 @@ class CityController extends Controller
      */
     public function destroy(LocationCity $locationCity)
     {
-        $locationCity->delete();
-        return $this->success($locationCity);
+        $delete = Delete::run($locationCity);
+        return $this->success($delete);
     }
 }

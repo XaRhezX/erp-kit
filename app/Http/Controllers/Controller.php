@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Str;
 use App\Traits\JsonResponse;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
@@ -51,16 +50,17 @@ class Controller extends BaseController
     public function search(Builder $data, Request $request)
     {
         if ($request->input('search')) {
+            $search = Str::lower(str_replace(' ', '%', $request->input('search')));
             if (Str::contains($this->search_type, '.')) {
                 $key = explode('.', $this->search_type);
                 $searchKey = end($key);
                 array_pop($key);
                 $relation = implode('.', $key);
-                $data->whereHas($relation, function ($q) use ($request, $searchKey) {
-                    $q->where($searchKey, 'like', '%' . $request->input('search') . '%');
+                $data->whereHas($relation, function ($q) use ($search, $searchKey) {
+                    $q->where($searchKey, 'like', '%' . $search . '%');
                 });
             } else {
-                $data->where($this->search_type, 'like', '%' . $request->input('search') . '%');
+                $data->whereRaw("LOWER($this->search_type) like '%" . $search . "%'");
             }
         }
         $filter = Arr::except($request->input(), ['search', 'search_type', 'per_page', 'sort_by', 'sort_key']);

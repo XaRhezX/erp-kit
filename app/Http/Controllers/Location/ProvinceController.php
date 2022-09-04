@@ -7,10 +7,14 @@ use App\Models\LocationProvince;
 use Illuminate\Http\Request;
 use App\Http\Requests\Location\Province\StoreRequest;
 use App\Http\Requests\Location\Province\UpdateRequest;
+use App\Actions\Location\Province\Store;
+use App\Actions\Location\Province\Update;
+use App\Actions\Location\Province\Delete;
+
 
 class ProvinceController extends Controller
 {
-    protected $is_public = false;
+    protected $is_public = true;
     protected $need_permission = true;
 
 
@@ -34,8 +38,8 @@ class ProvinceController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $created = LocationProvince::create($request->validated());
-        return $this->success($created);
+        $store = Store::run($request->validated());
+        return $this->success($store);
     }
 
     /**
@@ -59,8 +63,8 @@ class ProvinceController extends Controller
      */
     public function update(UpdateRequest $request, LocationProvince $locationProvince)
     {
-        $locationProvince->update($request->validated());
-        return $this->success($locationProvince);
+        $update = Update::run($locationProvince,$request->validated());
+        return $this->success($update);
     }
 
     /**
@@ -71,7 +75,7 @@ class ProvinceController extends Controller
      */
     public function destroy(LocationProvince $locationProvince)
     {
-        $locationProvince->delete();
-        return $this->success($locationProvince);
+        $delete = Delete::run($locationProvince);
+        return $this->success($delete);
     }
 }

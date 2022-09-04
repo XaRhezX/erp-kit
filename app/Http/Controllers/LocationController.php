@@ -6,10 +6,14 @@ use App\Models\Location;
 use Illuminate\Http\Request;
 use App\Http\Requests\Location\StoreRequest;
 use App\Http\Requests\Location\UpdateRequest;
+use App\Actions\Location\Store;
+use App\Actions\Location\Update;
+use App\Actions\Location\Delete;
+
 
 class LocationController extends Controller
 {
-    protected $is_public = false;
+    protected $is_public = true;
     protected $need_permission = true;
 
 
@@ -33,8 +37,8 @@ class LocationController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $created = Location::create($request->validated());
-        return $this->success($created);
+        $store = Store::run($request->validated());
+        return $this->success($store);
     }
 
     /**
@@ -58,8 +62,8 @@ class LocationController extends Controller
      */
     public function update(UpdateRequest $request, Location $location)
     {
-        $location->update($request->validated());
-        return $this->success($location);
+        $update = Update::run($location, $request->validated());
+        return $this->success($update);
     }
 
     /**
@@ -70,7 +74,7 @@ class LocationController extends Controller
      */
     public function destroy(Location $location)
     {
-        $location->delete();
-        return $this->success($location);
+        $delete = Delete::run($location);
+        return $this->success($delete);
     }
 }

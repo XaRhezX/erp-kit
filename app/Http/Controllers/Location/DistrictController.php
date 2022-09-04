@@ -7,10 +7,14 @@ use App\Models\LocationDistrict;
 use Illuminate\Http\Request;
 use App\Http\Requests\Location\District\StoreRequest;
 use App\Http\Requests\Location\District\UpdateRequest;
+use App\Actions\Location\District\Store;
+use App\Actions\Location\District\Update;
+use App\Actions\Location\District\Delete;
+
 
 class DistrictController extends Controller
 {
-    protected $is_public = false;
+    protected $is_public = true;
     protected $need_permission = true;
 
 
@@ -34,8 +38,8 @@ class DistrictController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $created = LocationDistrict::create($request->validated());
-        return $this->success($created);
+        $store = Store::run($request->validated());
+        return $this->success($store);
     }
 
     /**
@@ -59,8 +63,8 @@ class DistrictController extends Controller
      */
     public function update(UpdateRequest $request, LocationDistrict $locationDistrict)
     {
-        $locationDistrict->update($request->validated());
-        return $this->success($locationDistrict);
+        $update = Update::run($locationDistrict,$request->validated());
+        return $this->success($update);
     }
 
     /**
@@ -71,7 +75,7 @@ class DistrictController extends Controller
      */
     public function destroy(LocationDistrict $locationDistrict)
     {
-        $locationDistrict->delete();
-        return $this->success($locationDistrict);
+        $delete = Delete::run($locationDistrict);
+        return $this->success($delete);
     }
 }

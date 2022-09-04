@@ -7,10 +7,14 @@ use App\Models\LocationSubDistrict;
 use Illuminate\Http\Request;
 use App\Http\Requests\Location\SubDistrict\StoreRequest;
 use App\Http\Requests\Location\SubDistrict\UpdateRequest;
+use App\Actions\Location\SubDistrict\Store;
+use App\Actions\Location\SubDistrict\Update;
+use App\Actions\Location\SubDistrict\Delete;
+
 
 class SubDistrictController extends Controller
 {
-    protected $is_public = false;
+    protected $is_public = true;
     protected $need_permission = true;
 
 
@@ -34,8 +38,8 @@ class SubDistrictController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $created = LocationSubDistrict::create($request->validated());
-        return $this->success($created);
+        $store = Store::run($request->validated());
+        return $this->success($store);
     }
 
     /**
@@ -59,8 +63,8 @@ class SubDistrictController extends Controller
      */
     public function update(UpdateRequest $request, LocationSubDistrict $locationSubDistrict)
     {
-        $locationSubDistrict->update($request->validated());
-        return $this->success($locationSubDistrict);
+        $update = Update::run($locationSubDistrict, $request->validated());
+        return $this->success($update);
     }
 
     /**
@@ -71,7 +75,7 @@ class SubDistrictController extends Controller
      */
     public function destroy(LocationSubDistrict $locationSubDistrict)
     {
-        $locationSubDistrict->delete();
-        return $this->success($locationSubDistrict);
+        $delete = Delete::run($locationSubDistrict);
+        return $this->success($delete);
     }
 }

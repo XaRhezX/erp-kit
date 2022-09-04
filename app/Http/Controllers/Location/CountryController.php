@@ -7,10 +7,14 @@ use App\Models\LocationCountry;
 use Illuminate\Http\Request;
 use App\Http\Requests\Location\Country\StoreRequest;
 use App\Http\Requests\Location\Country\UpdateRequest;
+use App\Actions\Location\Country\Store;
+use App\Actions\Location\Country\Update;
+use App\Actions\Location\Country\Delete;
+
 
 class CountryController extends Controller
 {
-    protected $is_public = false;
+    protected $is_public = true;
     protected $need_permission = true;
 
 
@@ -34,8 +38,8 @@ class CountryController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $created = LocationCountry::create($request->validated());
-        return $this->success($created);
+        $store = Store::run($request->validated());
+        return $this->success($store);
     }
 
     /**
@@ -59,8 +63,8 @@ class CountryController extends Controller
      */
     public function update(UpdateRequest $request, LocationCountry $locationCountry)
     {
-        $locationCountry->update($request->validated());
-        return $this->success($locationCountry);
+        $update = Update::run($locationCountry, $request->validated());
+        return $this->success($update);
     }
 
     /**
@@ -71,7 +75,7 @@ class CountryController extends Controller
      */
     public function destroy(LocationCountry $locationCountry)
     {
-        $locationCountry->delete();
-        return $this->success($locationCountry);
+        $delete = Delete::run($locationCountry);
+        return $this->success($delete);
     }
 }
