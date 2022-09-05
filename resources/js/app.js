@@ -1,2 +1,2 @@
 import '@/bootstrap';
-import '~/main.js';
+import '../vue/main.js';

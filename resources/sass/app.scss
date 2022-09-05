@@ -1,0 +1,10 @@
+$global-primary-background: #013e7f;
+$global-secondary-background: #000;
+$offcanvas-bar-color-mode: dark;
+$navbar-nav-item-height: 60px;
+$table-small-cell-padding-vertical: 3px;
+$table-small-cell-padding-horizontal: 6px;
+// 2. Import default variables and available mixins.
+@import "node_modules/uikit/src/scss/variables-theme.scss";
+@import "node_modules/uikit/src/scss/mixins-theme.scss";
+@import "node_modules/uikit/src/scss/uikit-theme.scss";
