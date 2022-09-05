@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Auth\ChangePasswordController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\PasswordResetRequestController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Location\CityController;
 use App\Http\Controllers\Location\CountryController;
 use App\Http\Controllers\Location\DistrictController;
@@ -18,6 +22,14 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::prefix('auth')->group(function () {
+    Route::post('register', RegisterController::class);
+    Route::post('login', LoginController::class);
+    Route::post('reset-password', PasswordResetRequestController::class);
+    Route::post('change-password', ChangePasswordController::class);
+});
+
 
 Route::prefix('location')->group(function () {
     Route::apiResource('country', CountryController::class)->parameter('country', 'locationCountry');

@@ -9,7 +9,7 @@ window._ = _;
 
 import axios from 'axios';
 window.axios = axios;
-
+window.axios.defaults.withCredentials = true;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**
@@ -32,3 +32,18 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
 //     enabledTransports: ['ws', 'wss'],
 // });
+
+import UIkit from 'uikit';
+window.UIKit = UIkit;
+
+import Icons from 'uikit/dist/js/uikit-icons';
+window.Icons = Icons;
+UIkit.use(Icons);
+
+import ApexCharts from 'apexcharts';
+window.ApexCharts = ApexCharts;
+
+import debounce from "debounce";
+window.debounce = debounce;
+
+import 'vue-select/dist/vue-select.css';
